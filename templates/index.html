@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-fluid">
-
+<h1>Flaps : To see Gpx or Kml traces on maps in Flask</h1>
+<h4>Select a file to preview it on the map below</h4>
+<form enctype="multipart/form-data" action="" method="post">
+    <p><input type=file name=file>
+    <input type=submit value="See Trace">
+</form>
 <div class="row-fluid">
   <div class="span12 col-xs-12 col-sm-10 col-lg-10">
     <div id="map" class="map"></div>
@@ -53,7 +58,7 @@ var style = {
 
 var vector = new ol.layer.Vector({
   source: new ol.source.Vector({
-    url: '{{ url_for('static', filename='mygpxfile.gpx') }}',
+    url: '{{ myfileurl }}',
     format: new ol.format.GPX()
   }),
   style: function(feature, resolution) {

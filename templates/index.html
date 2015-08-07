@@ -70,8 +70,8 @@ var map = new ol.Map({
   layers: [raster, vector],
   target: document.getElementById('map'),
   view: new ol.View({
-    center: ol.proj.transform([3.1593, 50.7217], 'EPSG:4326', 'EPSG:3857'),
-    zoom: 12
+    center: ol.proj.transform({{ centercoords }}, 'EPSG:4326', 'EPSG:3857'),
+    zoom: 14
   })
 });
 

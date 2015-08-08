@@ -22,7 +22,7 @@ def index():
         f = request.files['file']
         myfilename = f.filename
         myfileurl = url_for('static', filename=myfilename)
-        centercoords=getcoords(os.path.join('static', myfilename))
+        centercoords = getcoords(os.path.join('static', myfilename))
         return render_template('index.html', myfilename=myfilename,
                                myfileurl=myfileurl, centercoords=centercoords)
     return render_template('index.html')

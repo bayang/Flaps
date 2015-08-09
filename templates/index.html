@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-fluid">
-<h2 class="bg-success">Flaps : See Gpx or Kml traces on maps in Flask</h2>
+<a href="/"><h2 class="bg-success text-muted">Flaps : See Gpx or Kml traces on maps in Flask</h2></a>
 <h4>Select a file to preview it on the map below</h4>
-<form enctype="multipart/form-data" action="" method="post">
-    <p><label class="btn btn-success" for="my-file-selector">
-    <input id="my-file-selector" type="file" name="file" style="display:none;" onchange='$("#upload-file-info").html($(this).val());'>
+<form class="form-inline" enctype="multipart/form-data" action="" method="post">
+    <div class="form-group">
+    <label class="btn btn-success" for="my-file-selector">
+    <input class="form-control" id="my-file-selector" type="file" name="file" style="display:none;" onchange='$("#upload-file-info").html($(this).val());'>
     Choose a file
 </label>&nbsp;
-        <span class='label label-success' id="upload-file-info"></span>
-
-    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-globe"></span> See Trace</button>
+        <span class='label label-default' id="upload-file-info"></span>
+        <select class="form-control" id="maptype" name="maptype">
+        <option value="" selected>Select a view type</option>
+        <option value="bing">Aerial view</option>
+        <option value="OSM">Road view</option>
+        </select>
+        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-globe"></span> See Trace</button>
+</div>
 </form>
+
 <div class="row-fluid">
 <div class="col-lg-1"></div>
   <div class="span12 col-xs-12 col-sm-12 col-lg-10">
@@ -27,14 +34,27 @@
 
 </div>
 <script>
+
+{% if maps['type']=='OSM' %}
+var myraster = new ol.layer.Tile({
+               source: new ol.source.OSM()
+         });
+{% elif maps['type']=='bing' %}
+var myraster = new ol.layer.Tile({
+   source: new ol.source.BingMaps({
+     imagerySet: 'AerialWithLabels',
+     key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3'
+   })
+ });
+{% else %}
+var myraster = new ol.layer.Tile({
+               source: new ol.source.OSM()
+         });
+{% endif %}
+
 var projection = ol.proj.get('EPSG:3857');
 
-var raster = new ol.layer.Tile({
-  source: new ol.source.BingMaps({
-    imagerySet: 'AerialWithLabels',
-    key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3'
-  })
-});
+var raster = myraster
 
 var style = {
   'Point': [new ol.style.Style({

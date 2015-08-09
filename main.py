@@ -18,14 +18,19 @@ def getcoords(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    maps = {'type': 'default'}
     if request.method == 'POST':
         f = request.files['file']
         myfilename = f.filename
         myfileurl = url_for('static', filename=myfilename)
         centercoords = getcoords(os.path.join('static', myfilename))
-        return render_template('index.html', myfilename=myfilename,
-                               myfileurl=myfileurl, centercoords=centercoords)
-    return render_template('index.html')
+        if request.form['maptype'] == 'OSM':
+            maps['type'] = 'OSM'
+        elif request.form['maptype'] == 'bing':
+            maps['type'] = 'bing'
+        return render_template('index.html', myfileurl=myfileurl,
+                               centercoords=centercoords, maps=maps)
+    return render_template('index.html', maps=maps)
 
 if __name__ == '__main__':
     app.run(debug=True)

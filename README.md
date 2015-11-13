@@ -11,3 +11,5 @@ You can choose between aerial or road maps. The map will automatically center it
 To use it clone the repo, and install dependencies by running ```pip install -r requirements.txt```
 
 Once done run ```python main.py``` and visit ```localhost:5000```
+
+![Here's a screenshot](/Flaps_screenshot.png)
